@@ -1,15 +1,3 @@
-:root {
-  --bg-main: #f8fafc;
-  --bg-card: #ffffff;
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --accent-color: #0284c7;
-  --accent-hover: #0369a1;
-  --border-color: #e2e8f0;
-  --sidebar-bg: #0f172a;
-  --sidebar-text: #94a3b8;
-}
-
 * {
   box-sizing: border-box;
   margin: 0;
@@ -18,31 +6,32 @@
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background-color: var(--bg-main);
-  color: var(--text-primary);
-  line-height: 1.5;
+  background-color: #f8fafc;
+  color: #0f172a;
 }
 
-.app-container {
+.app-layout {
   display: flex;
   min-height: 100vh;
 }
 
-/* Sidebar */
+/* Сайдбар - с жестким Z-индексом для исключения перекрытия */
 .sidebar {
-  width: 250px;
-  background-color: var(--sidebar-bg);
-  color: #fff;
+  width: 260px;
+  background-color: #0b132b;
+  color: #ffffff;
   padding: 24px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+  position: relative;
+  z-index: 9999 !important;
+  pointer-events: auto !important;
+  flex-shrink: 0;
 }
 
-.brand h2 {
+.brand {
   font-size: 20px;
-  color: #f8fafc;
-  letter-spacing: 0.5px;
+  font-weight: 700;
+  margin-bottom: 32px;
+  padding-left: 8px;
 }
 
 .nav-menu {
@@ -53,166 +42,163 @@ body {
 
 .nav-item {
   background: transparent;
-  border: none;
-  color: var(--sidebar-text);
+  border: 1px solid transparent;
+  color: #94a3b8;
   padding: 12px 16px;
   text-align: left;
   font-size: 14px;
-  font-weight: 500;
-  border-radius: 6px;
-  cursor: pointer;
+  border-radius: 8px;
+  cursor: pointer !important;
   transition: all 0.2s ease;
+  pointer-events: auto !important;
+  user-select: none;
 }
 
 .nav-item:hover {
-  background-color: rgba(255, 255, 255, 0.05);
-  color: #fff;
+  background: #1c2541;
+  color: #ffffff;
 }
 
 .nav-item.active {
-  background-color: var(--accent-color);
-  color: #fff;
+  background: #0284c7;
+  color: #ffffff;
+  font-weight: 600;
+  border-color: #38bdf8;
 }
 
-/* Main Content */
+/* Контентная область */
 .main-content {
-  flex: 1;
-  padding: 32px;
+  flex-grow: 1;
+  padding: 32px 48px;
   max-width: 1000px;
-  margin: 0 auto;
+  z-index: 1;
 }
 
-.section-header {
-  margin-bottom: 24px;
-}
-
-.section-header h1 {
-  font-size: 26px;
-  color: var(--text-primary);
-}
-
-.section-header p {
-  color: var(--text-secondary);
-  font-size: 14px;
-}
-
+/* Скрытие и показ вкладок */
 .tab-content {
   display: none;
 }
 
 .tab-content.active {
-  display: block;
-}
-
-/* UI Cards & Forms */
-.card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 24px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-  margin-bottom: 24px;
-}
-
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-  margin-bottom: 20px;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.form-group.full-width {
-  grid-column: span 2;
-}
-
-label {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-input, select, textarea {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-  font-size: 14px;
-  color: var(--text-primary);
-  background-color: #fff;
-  outline: none;
-}
-
-input:focus, select:focus, textarea:focus {
-  border-color: var(--accent-color);
-  box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.2);
-}
-
-.btn-primary {
-  background-color: var(--accent-color);
-  color: #fff;
-  border: none;
-  padding: 12px 20px;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s ease;
-  width: 100%;
-}
-
-.btn-primary:hover {
-  background-color: var(--accent-hover);
-}
-
-.btn-secondary {
-  background: #f1f5f9;
-  border: 1px solid var(--border-color);
-  color: var(--text-primary);
-  padding: 6px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 13px;
-}
-
-.btn-secondary:hover {
-  background: #e2e8f0;
+  display: block !important;
 }
 
 .hidden {
   display: none !important;
 }
 
-/* Spinner Loader */
-.loader-container {
+h2 {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  color: #64748b;
+  margin-bottom: 24px;
+  font-size: 14px;
+}
+
+/* Карточки и Формы */
+.card {
+  background: #ffffff;
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #334155;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #0284c7;
+  box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.15);
+}
+
+.btn-primary {
+  width: 100%;
+  background: #0284c7;
+  color: white;
+  border: none;
+  padding: 12px;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-primary:hover {
+  background: #0369a1;
+}
+
+.btn-secondary {
+  background: #f1f5f9;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background: #e2e8f0;
+}
+
+/* Лоадер */
+.loader {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 32px;
   gap: 12px;
-  color: var(--text-secondary);
+  color: #64748b;
 }
 
 .spinner {
-  width: 36px;
-  height: 36px;
-  border: 4px solid var(--border-color);
-  border-top-color: var(--accent-color);
+  width: 32px;
+  height: 32px;
+  border: 4px solid #e2e8f0;
+  border-top-color: #0284c7;
   border-radius: 50%;
-  animation: spin 1s linear infinite;
+  animation: spin 0.8s linear infinite;
 }
 
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
 
-/* Lists */
-.registry-list {
+.list-container {
+  list-style: none;
   padding: 0;
-  margin: 0;
+}
+
+.file-status-text {
+  color: #0284c7;
+  font-weight: 500;
 }
