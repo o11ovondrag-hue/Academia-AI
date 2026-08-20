@@ -36,39 +36,31 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // --- 2. ЗАПРОС К API GEMINI (АКТУАЛЬНЫЕ МОДЕЛИ 2.5 И 3.1) ---
+ // --- 2. ИСПРАВЛЕННЫЙ ЗАПРОС К API GEMINI (ТОЛЬКО СТАБИЛЬНЫЙ 2.5-FLASH) ---
   async function callGemini(promptText) {
-    const endpoints = [
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`,
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-pro-preview:generateContent?key=${GEMINI_API_KEY}`
-    ];
+    // Используем исключительно легкую и доступную модель 2.5-flash
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
-    let lastError = null;
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: promptText }] }]
+        })
+      });
 
-    for (const url of endpoints) {
-      try {
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: promptText }] }]
-          })
-        });
+      const data = await response.json();
 
-        const data = await response.json();
-
-        if (response.ok && data.candidates && data.candidates[0]) {
-          let raw = data.candidates[0].content.parts[0].text;
-          return raw.replace(/```json/g, '').replace(/```/g, '').trim();
-        } else {
-          lastError = data.error?.message || "Ошибка API";
-        }
-      } catch (e) {
-        lastError = e.message;
+      if (response.ok && data.candidates && data.candidates[0]) {
+        let raw = data.candidates[0].content.parts[0].text;
+        return raw.replace(/```json/g, '').replace(/```/g, '').trim();
+      } else {
+        throw new Error(data.error?.message || "Ошибка API");
       }
+    } catch (e) {
+      throw new Error(e.message || "Не удалось подключиться к Gemini API.");
     }
-
-    throw new Error(lastError || "Не удалось подключиться к Gemini API.");
   }
 
   // Рендер шаблона силлабуса
