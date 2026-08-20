@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const GEMINI_API_KEY = "AIzaSyCTvc-dwC8JJWDrpeR4mphg1kI1zcFJaOo";
+  const GEMINI_API_KEY = "AQ.Ab8RN6KKmUxAU9ukcoLLr3O0-ps7yzyWWv5jm03QpJBFuxGmLw";
 
   // Хранилище сгенерированных силлабусов
   const savedSyllabi = [];
