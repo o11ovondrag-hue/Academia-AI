@@ -34,9 +34,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // --- 2. ИСПРАВЛЕННЫЙ ЗАПРОС К API GEMINI (АКТУАЛЬНЫЕ МОДЕЛИ) ---
+  // --- 2. ИСПРАВЛЕННЫЙ ЗАПРОС К API С АВТОПОДБОРОМ МОДЕЛЕЙ ---
   async function callGemini(promptText) {
-    // Используем только актуальные действующие модели
+    // Список только актуальных моделей поколения 2.x
     const endpoints = [
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`,
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`
@@ -60,14 +60,14 @@ document.addEventListener('DOMContentLoaded', () => {
           let raw = data.candidates[0].content.parts[0].text;
           return raw.replace(/```json/g, '').replace(/```/g, '').trim();
         } else {
-          lastError = data.error?.message || "Ошибка запроса к API";
+          lastError = data.error?.message || "Ошибка API";
         }
       } catch (e) {
         lastError = e.message;
       }
     }
 
-    throw new Error(lastError || "Не удалось подключиться к Gemini API. Проверьте валидность API ключа.");
+    throw new Error(lastError || "Не удалось отправить запрос к Gemini.");
   }
 
   // Рендер шаблона силлабуса
