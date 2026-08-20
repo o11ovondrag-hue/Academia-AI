@@ -36,9 +36,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
- // --- 2. ИСПРАВЛЕННЫЙ ЗАПРОС К API GEMINI (ТОЛЬКО СТАБИЛЬНЫЙ 2.5-FLASH) ---
+// --- 2. ЗАПРОС К API GEMINI (СТАБИЛЬНАЯ МОДЕЛЬ GEMINI 2.5 FLASH) ---
   async function callGemini(promptText) {
-    // Используем исключительно легкую и доступную модель 2.5-flash
     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
     try {
@@ -62,7 +61,6 @@ document.addEventListener('DOMContentLoaded', () => {
       throw new Error(e.message || "Не удалось подключиться к Gemini API.");
     }
   }
-
   // Рендер шаблона силлабуса
   function renderSyllabusHTML(data) {
     return `
