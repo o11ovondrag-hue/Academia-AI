@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Academia AI</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Подключение pdf.js для чтения PDF-файлов -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Боковое меню -->
+    <aside class="sidebar">
+      <div class="brand">
+        <h2>Academia AI</h2>
+      </div>
+      <nav class="nav-menu">
+        <button class="nav-item active" data-tab="single-prompt">Single-Prompt</button>
+        <button class="nav-item" data-tab="registry">Силлабусы</button>
+        <button class="nav-item" data-tab="analytics">Универсальный Анализ</button>
+        <button class="nav-item" data-tab="workload">Тайм-менеджмент</button>
+      </nav>
+    </aside>
+
+    <!-- Основной контент -->
+    <main class="main-content">
+      
+      <!-- Вкладка 1: Single-Prompt -->
+      <section id="tab-single-prompt" class="tab-content active">
+        <header class="section-header">
+          <h1>Single-Prompt Protocol</h1>
+          <p>Автоматическое формирование академического комплекта / Academic Package Generator</p>
+        </header>
+        
+        <form id="generator-form" class="card">
+          <div class="form-grid">
+            <div class="form-group full-width">
+              <label for="course-title">Название дисциплины / Course Title</label>
+              <input type="text" id="course-title" placeholder="e.g. International Relations Theory" required>
+            </div>
+
+            <div class="form-group">
+              <label for="course-level">Академический уровень / Academic Level</label>
+              <select id="course-level">
+                <option value="Бакалавриат (BA)">Бакалавриат (BA) — базовый</option>
+                <option value="Магистратура (MA)">Магистратура (MA) — продвинутый</option>
+                <option value="Ph.D. / Докторантура">Ph.D. / Докторантура</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="course-weeks">Длительность (недель) / Weeks</label>
+              <input type="number" id="course-weeks" value="15" min="1" max="30">
+            </div>
+
+            <div class="form-group">
+              <label for="course-domain">Предметная область / Discipline</label>
+              <select id="course-domain">
+                <option value="История и Источниковедение">История и Источниковедение</option>
+                <option value="Языкознание и Лингвистика">Языкознание и Лингвистика</option>
+                <option value="Социология и Политология">Социология и Политология</option>
+                <option value="Философия и Культурология">Философия и Культурология</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="course-lang">Язык материалов / Output Language</label>
+              <select id="course-lang">
+                <option value="Русский (Russian)">Русский (Russian)</option>
+                <option value="Английский (English)">Английский (English)</option>
+                <option value="Казахский (Kazakh)">Казахский (Kazakh)</option>
+              </select>
+            </div>
+          </div>
+
+          <button type="submit" id="btn-generate" class="btn-primary">
+            🚀 Сформировать комплект / Generate Package
+          </button>
+        </form>
+
+        <div id="loader" class="loader-container hidden">
+          <div class="spinner"></div>
+          <p>Идет генерация академического комплекта через Gemini API...</p>
+        </div>
+
+        <div id="result-container" class="card hidden">
+          <div id="output-content"></div>
+        </div>
+      </section>
+
+      <!-- Вкладка 2: Реестр силлабусов -->
+      <section id="tab-registry" class="tab-content">
+        <header class="section-header">
+          <h1>Реестр Силлабусов</h1>
+          <p>Архив сгенерированных программ курсов</p>
+        </header>
+        <div class="card">
+          <ul id="syllabi-list" class="registry-list"></ul>
+        </div>
+      </section>
+
+      <!-- Вкладка 3: Универсальный Анализ -->
+      <section id="tab-analytics" class="tab-content">
+        <header class="section-header">
+          <h1>Универсальный Академический Анализ</h1>
+          <p>Глубокий 8-уровневый разбор научных статей и монографий</p>
+        </header>
+
+        <div class="card">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="source-category">Тип источника</label>
+              <select id="source-category">
+                <option value="Научная статья">Научная статья (Journal Article)</option>
+                <option value="Монография / Глава">Монография / Глава книги</option>
+                <option value="Исторический документ">Исторический источник / Архив</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="source-identifier">Идентификатор (DOI / ISSN / Ссылка)</label>
+              <input type="text" id="source-identifier" placeholder="e.g. 10.1080/09668136.2021.12345">
+            </div>
+
+            <div class="form-group full-width">
+              <label for="file-input">Загрузить PDF / TXT файл</label>
+              <input type="file" id="file-input" accept=".pdf, .txt">
+              <small id="file-status" class="help-text"></small>
+            </div>
+
+            <div class="form-group full-width">
+              <label for="source-text-input">Текст для анализа (если файл не загружен)</label>
+              <textarea id="source-text-input" rows="8" placeholder="Вставьте академический текст сюда..."></textarea>
+            </div>
+          </div>
+
+          <button type="button" id="btn-analyze-text" class="btn-primary">
+            🧠 Провести 8-уровневый разбор
+          </button>
+        </div>
+
+        <div id="analytics-loader" class="loader-container hidden">
+          <div class="spinner"></div>
+          <p>Идет академический анализ источника...</p>
+        </div>
+
+        <div id="analytics-output" class="hidden"></div>
+      </section>
+
+      <!-- Вкладка 4: Тайм-менеджмент -->
+      <section id="tab-workload" class="tab-content">
+        <header class="section-header">
+          <h1>Калькулятор Академической Нагрузки</h1>
+          <p>Расчет норм чтения и трудоемкости курсов (ECTS)</p>
+        </header>
+
+        <div class="card">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Всего страниц чтения на курс</label>
+              <input type="number" id="calc-pages" value="450" min="1">
+            </div>
+
+            <div class="form-group">
+              <label>Длительность семестра (недель)</label>
+              <input type="number" id="calc-weeks" value="15" min="1">
+            </div>
+          </div>
+
+          <button type="button" id="btn-calc" class="btn-primary">
+            📊 Рассчитать нагрузку
+          </button>
+
+          <div id="calc-live-result"></div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
