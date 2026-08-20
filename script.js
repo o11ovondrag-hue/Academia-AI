@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
+  console.log("Academia-AI Script loaded: v3.1.0");
+
   // Расшифровка API ключа Gemini
   const ENCODED_KEY = "QVEuQWI4Uk42TDAxWUxxNUJzOGNDcloyLUFIMzJfZlZGSlN2dVpTbGVybEc1bXVTRjFGZ3c="; 
   const GEMINI_API_KEY = atob(ENCODED_KEY);
@@ -34,11 +36,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // --- 2. ИСПРАВЛЕННЫЙ ЗАПРОС К API GEMINI (АКТУАЛЬНЫЕ МОДЕЛИ 2.5) ---
+  // --- 2. ЗАПРОС К API GEMINI (АКТУАЛЬНЫЕ МОДЕЛИ 2.5 И 3.1) ---
   async function callGemini(promptText) {
     const endpoints = [
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`,
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent?key=${GEMINI_API_KEY}`
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-pro-preview:generateContent?key=${GEMINI_API_KEY}`
     ];
 
     let lastError = null;
