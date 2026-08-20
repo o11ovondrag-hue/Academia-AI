@@ -36,8 +36,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-// --- 2. ЗАПРОС К API GEMINI ---
+// --- 2. ЗАПРОС К API GEMINI (АКТУАЛЬНЫЙ ЭНДПОИНТ) ---
   async function callGemini(promptText) {
+    // Изменен console.log для контроля версии
+    console.log("Academia-AI Script loaded: v5.0.0");
+
     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
     try {
