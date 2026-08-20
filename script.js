@@ -1,34 +1,27 @@
 document.addEventListener('DOMContentLoaded', () => {
-  console.log("Academia-AI Script loaded: v3.1.0");
+  console.log("Academia-AI Script loaded: v6.0.0");
 
-  // Расшифровка API ключа Gemini
   const ENCODED_KEY = "QVEuQWI4Uk42TDAxWUxxNUJzOGNDcloyLUFIMzJfZlZGSlN2dVpTbGVybEc1bXVTRjFGZ3c="; 
   const GEMINI_API_KEY = atob(ENCODED_KEY);
 
-  // Хранилище сгенерированных силлабусов
   const savedSyllabi = [];
 
-  // --- 1. НАДЕЖНОЕ ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК (Event Delegation) ---
+  // 1. НАВИГАЦИЯ
   document.body.addEventListener('click', (e) => {
     const navBtn = e.target.closest('.nav-item');
     if (!navBtn) return;
-
     e.preventDefault();
-
     const targetTab = navBtn.getAttribute('data-tab');
     if (!targetTab) return;
 
-    // Снимаем подсвечивание со всех кнопок
     document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
     navBtn.classList.add('active');
 
-    // Скрываем все страницы
     document.querySelectorAll('.tab-content').forEach(tab => {
       tab.classList.remove('active');
       tab.classList.add('hidden');
     });
 
-    // Показываем целевую страницу
     const activeSection = document.getElementById(`tab-${targetTab}`);
     if (activeSection) {
       activeSection.classList.add('active');
@@ -36,10 +29,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-// --- 2. ЗАПРОС К API GEMINI (АКТУАЛЬНАЯ МОДЕЛЬ GEMINI 3.6 FLASH) ---
+  // 2. ЗАПРОС К GEMINI API (МОДЕЛЬ GEMINI 3.6 FLASH)
   async function callGemini(promptText) {
-    console.log("Academia-AI Script loaded: v6.0.0");
-
     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${GEMINI_API_KEY}`;
 
     try {
@@ -63,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
       throw new Error(e.message || "Не удалось подключиться к Gemini API.");
     }
   }
-  // Рендер шаблона силлабуса
+
   function renderSyllabusHTML(data) {
     return `
       <div style="padding: 16px; background: #ffffff; border-radius: 8px; margin-top: 12px; border: 1px solid #e2e8f0;">
@@ -85,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
   }
 
-  // --- 3. ГЕНЕРАЦИЯ СИЛЛАБУСА ---
+  // 3. ГЕНЕРАЦИЯ СИЛЛАБУСА
   const generatorForm = document.getElementById('generator-form');
   if (generatorForm) {
     generatorForm.addEventListener('submit', async (e) => {
@@ -132,7 +123,6 @@ document.addEventListener('DOMContentLoaded', () => {
         outputContent.innerHTML = renderSyllabusHTML(data);
         resultContainer.classList.remove('hidden');
 
-        // Сохраняем в реестр
         data.id = Date.now();
         data.createdAt = new Date().toLocaleDateString();
         savedSyllabi.unshift(data);
@@ -147,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // --- 4. РЕЕСТР СИЛЛАБУСОВ ---
+  // 4. РЕЕСТР
   function renderSyllabiList() {
     const listContainer = document.getElementById('syllabi-list');
     if (!listContainer) return;
@@ -189,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   renderSyllabiList();
 
-  // --- 5. ЧТЕНИЕ PDF/TXT И 8-УРОВНЕВЫЙ АНАЛИЗ ---
+  // 5. АНАЛИЗ PDF/TXT
   const fileInput = document.getElementById('file-input');
   const fileStatus = document.getElementById('file-status');
   const textInput = document.getElementById('source-text-input');
@@ -307,7 +297,7 @@ ${text.slice(0, 12000)}
     });
   }
 
-  // --- 6. КАЛЬКУЛЯТОР НАГРУЗКИ ---
+  // 6. ТАЙМ-МЕНЕДЖМЕНТ
   const btnCalc = document.getElementById('btn-calc');
   if (btnCalc) {
     btnCalc.addEventListener('click', () => {
