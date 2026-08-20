@@ -34,12 +34,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // --- 2. УНИВЕРСАЛЬНЫЙ ЗАПРОС К API GEMINI ---
+  // --- 2. ИСПРАВЛЕННЫЙ ЗАПРОС К API GEMINI (v1beta) ---
   async function callGemini(promptText) {
     const endpoints = [
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`,
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`,
-      `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${GEMINI_API_KEY}`
     ];
 
     let lastError = null;
@@ -49,7 +49,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const response = await fetch(url, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ contents: [{ parts: [{ text: promptText }] }] })
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: promptText }] }]
+          })
         });
 
         const data = await response.json();
@@ -58,17 +60,17 @@ document.addEventListener('DOMContentLoaded', () => {
           let raw = data.candidates[0].content.parts[0].text;
           return raw.replace(/```json/g, '').replace(/```/g, '').trim();
         } else {
-          lastError = data.error?.message || "Ошибка API";
+          lastError = data.error?.message || "Ошибка запроса к API";
         }
       } catch (e) {
         lastError = e.message;
       }
     }
 
-    throw new Error(lastError || "Не удалось получить ответ от Gemini API.");
+    throw new Error(lastError || "Не удалось подключиться ни к одной модели Gemini.");
   }
 
-  // Вспомогательный рендер шаблона силлабуса
+  // Рендер шаблона силлабуса
   function renderSyllabusHTML(data) {
     return `
       <div style="padding: 16px; background: #ffffff; border-radius: 8px; margin-top: 12px; border: 1px solid #e2e8f0;">
@@ -152,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // --- 4. ОТРЕОБРАЖЕНИЕ РЕЕСТРА ---
+  // --- 4. РЕЕСТР СИЛЛАБУСОВ ---
   function renderSyllabiList() {
     const listContainer = document.getElementById('syllabi-list');
     if (!listContainer) return;
