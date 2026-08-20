@@ -36,9 +36,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-// --- 2. ЗАПРОС К API GEMINI (СТАБИЛЬНАЯ МОДЕЛЬ GEMINI 2.5 FLASH) ---
+// --- 2. ЗАПРОС К API GEMINI (РАБОЧАЯ МОДЕЛЬ GEMINI 1.5 FLASH) ---
   async function callGemini(promptText) {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+    // Используем проверенную и доступную на Free Tier модель gemini-1.5-flash
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
     try {
       const response = await fetch(url, {
